@@ -53,6 +53,12 @@ pipeline {
                 }
             }
         }
+
+        stage('Run Tests') {
+            steps {
+                bat 'call test.bat'
+            }
+        }
         
         stage('Success') {
             steps {
@@ -66,21 +72,35 @@ pipeline {
     post {
         always {
             echo '📊 Build completed!'
-            // Optional cleanup - uncomment if you want
-            // cleanWs()
+            // cleanWs() // Optional - uncomment to clean workspace
         }
         success {
             echo '🎉 SUCCESS! Jenkins GitHub integration is working!'
-            echo ' '
-            echo '📈 Next steps:'
-            echo '1. Add email notifications'
-            echo '2. Add automated tests'
-            echo '3. Set up GitHub webhooks for auto-trigger'
-            echo '4. Try building a real application'
+            
+            // Add email notification
+            emailext (
+                subject: "✅ Jenkins Build #${env.BUILD_NUMBER} Success",
+                body: """
+                <h3>✅ Jenkins Build Success!</h3>
+                <p><b>Job:</b> ${env.JOB_NAME}</p>
+                <p><b>Build #:</b> ${env.BUILD_NUMBER}</p>
+                <p><b>Status:</b> SUCCESS</p>
+                <p><b>Duration:</b> ${currentBuild.durationString}</p>
+                <p><b>View Build:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                <p><b>Git Commit:</b> ${env.GIT_COMMIT}</p>
+                <p><b>Workspace:</b> ${env.WORKSPACE}</p>
+                """,
+                to: 'your.email@gmail.com',  // CHANGE THIS TO YOUR EMAIL
+                mimeType: 'text/html'
+            )
         }
         failure {
             echo '❌ Build failed'
-            echo 'Check the stage that failed above'
+            emailext (
+                subject: "❌ Jenkins Build #${env.BUILD_NUMBER} Failed",
+                body: "Build failed! Check ${env.BUILD_URL}",
+                to: 'your.email@gmail.com'  // CHANGE THIS
+            )
         }
     }
 }
