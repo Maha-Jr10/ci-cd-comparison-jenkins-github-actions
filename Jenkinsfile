@@ -90,7 +90,7 @@ pipeline {
                 <p><b>Git Commit:</b> ${env.GIT_COMMIT}</p>
                 <p><b>Workspace:</b> ${env.WORKSPACE}</p>
                 """,
-                to: 'your.email@gmail.com',  // CHANGE THIS TO YOUR EMAIL
+                to: 'muhammedjohn3@gmail.com',  
                 mimeType: 'text/html'
             )
         }
@@ -99,7 +99,7 @@ pipeline {
             emailext (
                 subject: "❌ Jenkins Build #${env.BUILD_NUMBER} Failed",
                 body: "Build failed! Check ${env.BUILD_URL}",
-                to: 'your.email@gmail.com'  // CHANGE THIS
+                to: 'muhammedjohn3@gmail.com'  
             )
         }
     }
