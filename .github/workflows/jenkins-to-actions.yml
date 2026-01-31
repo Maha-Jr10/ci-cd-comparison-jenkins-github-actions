@@ -14,7 +14,7 @@ jobs:
     steps:
       # Step 1: Checkout code (like Jenkins checkout stage)
       - name: 🚀 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # ✅ UPDATED to v4
         with:
           fetch-depth: 0  # Get all history for git log
 
@@ -26,13 +26,11 @@ jobs:
           echo "Job Name: ${{ github.job }}"
           echo "Workspace: ${{ github.workspace }}"
 
-      # Step 3: System Info (like Jenkins System Info) - FIXED
+      # Step 3: System Info (like Jenkins System Info)
       - name: 💻 System Information
         run: |
           echo "==== WINDOWS SYSTEM INFO ===="
-          # Option 1: Use cmd to run ver (FIX FOR THE ERROR)
           cmd /c ver
-          
           echo "User: $env:USERNAME"
           echo "Computer: $env:COMPUTERNAME"
           echo "Processor Count: $env:NUMBER_OF_PROCESSORS"
@@ -71,7 +69,7 @@ jobs:
       # Step 8: Email Notification (like Jenkins Email)
       - name: 📧 Send Email Notification
         if: success()
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v3  # This one is still OK
         with:
           server_address: smtp.gmail.com
           server_port: 587
@@ -114,7 +112,7 @@ jobs:
           echo "## Date: $(date)" >> report.md
           
       - name: 📤 Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # ✅ UPDATED to v4
         with:
           name: build-report
           path: report.md
